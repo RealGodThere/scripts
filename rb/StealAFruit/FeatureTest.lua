@@ -16,14 +16,14 @@ local raidStarted = false
 local function AttackBossOnce()
 	if attacking then return end
 	attacking = true
-	for i = 1, 35 do
+	for i = 1, 40 do
 		local args = {
 			"Charge",
 			"String Fly",
 			"String",
 			{
-				RootCFrame = CFrame.new(-1683.433349609375, 219.54563903808594, 22.77704429626465, 0.10835906863212585, 0, -0.9941118359565735, 0, 1, 0, 0.9941118359565735, 0, 0.10835906863212585),
-				MouseHit = CFrame.new(-1673.288818359375, 215.7633514404297, 23.431644439697266, 0.10835667699575424, 0.47881585359573364, -0.871202826499939, 3.725290298461914e-09, 0.8763628602027893, 0.48165175318717957, 0.9941121339797974, -0.05219018831849098, 0.09495975077152252)
+				RootCFrame = CFrame.new(71.12207794189453, 17.851551055908203, 182.30206298828125, -0.9995360970497131, 1.08759641292977e-08, 0.030456289649009705, 8.202976964355457e-09, 1, -8.78896599942891e-08, -0.030456289649009705, -8.759905512079058e-08, -0.9995360970497131),
+	        	MouseHit = CFrame.new(69.21131134033203, 14.402069091796875, 187.5513153076172, -0.9995361566543579, -0.021176502108573914, 0.021888792514801025, 9.313225746154785e-10, 0.7187039256095886, 0.6953163146972656, -0.030455924570560455, 0.694993793964386, -0.7183704972267151)
 			}
 		}
 		remote:FireServer(unpack(args))
@@ -62,19 +62,23 @@ task.spawn(function()
 		if not raidStarted then
 			TryStartRaid()
 		end
-		local entities = workspace:FindFirstChild("Entities")
-		if not entities then continue end
-		local boss = entities:FindFirstChild("Light Boss")
-		if boss and boss:FindFirstChild("Head") then
+		local raid = workspace:FindFirstChild("Raid")
+		if not raid then continue end
+		local bossCam = raid:FindFirstChild("BossSpawnCam1")
+		if bossCam then
 			if not bossExists then
 				bossExists = true
 				AttackBossOnce()
-				while enabled and boss and boss.Parent == entities do
-					local hrp = char:FindFirstChild("HumanoidRootPart")
-					if hrp and boss:FindFirstChild("Head") then
-						hrp.CFrame = boss.Head.CFrame + Vector3.new(0, 3, 0)
+				local entities = workspace:FindFirstChild("Entities")
+				if entities then
+					local boss = entities:FindFirstChild("Light Boss")
+					while enabled and boss and boss.Parent == entities do
+						local hrp = char:FindFirstChild("HumanoidRootPart")
+						if hrp and boss:FindFirstChild("Head") then
+							hrp.CFrame = boss.Head.CFrame + Vector3.new(0, 3, 0)
+						end
+						task.wait(0.1)
 					end
-					task.wait(0.1)
 				end
 				bossExists = false
 			end
