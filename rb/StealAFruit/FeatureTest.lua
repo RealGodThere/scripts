@@ -16,7 +16,7 @@ local raidStarted = false
 local function AttackBossOnce()
 	if attacking then return end
 	attacking = true
-	for i = 1, 70 do
+	for i = 1, 35 do
 		local args = {
 			"Charge",
 			"String Fly",
