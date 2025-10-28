@@ -634,7 +634,7 @@ local function createBindableGUI()
 				disableAutoClearVFX()
 			end
 		end},
-		{key="R",name="KillauraTest", state=function() return autoAuraRunning end, toggle=function()
+		{key="R",name="Killaura", state=function() return autoAuraRunning end, toggle=function()
 			if autoAuraRunning then
 				autoAuraCancel=true
 			else
