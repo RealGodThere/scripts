@@ -267,7 +267,7 @@ end
 -- =======================
 -- ClearVFX system (v2)
 -- =======================
-local autoClearVFXEnabled = false
+local autoClearVFXEnabled = true
 local autoClearVFXConnection = nil
 
 local function ClearVFX()
