@@ -634,8 +634,7 @@ local function createBindableGUI()
 				disableAutoClearVFX()
 			end
 		end},
-		{key="R",name="Barrier", state=function() return autoAuraRunning end, toggle=function()
-			-- R launches auto aura routine (non-toggle: start if not running)
+		{key="R",name="Killaura", state=function() return autoAuraRunning end, toggle=function()
 			if autoAuraRunning then
 				autoAuraCancel=true
 			else
