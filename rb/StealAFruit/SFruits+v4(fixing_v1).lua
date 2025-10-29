@@ -270,10 +270,6 @@ end
 local autoClearVFXEnabled = true
 local autoClearVFXConnection = nil
 
-if autoClearVFXEnabled then
-    enableAutoClearVFX()
-end
-
 local function ClearVFX()
 	local Players = game:GetService("Players")
 	local player = Players.LocalPlayer
@@ -311,6 +307,10 @@ local function disableAutoClearVFX()
 		newFolder.Name = "AttackVfx"
 		newFolder.Parent = workspace
 	end
+end
+
+if autoClearVFXEnabled then
+    enableAutoClearVFX()
 end
 
 local autoAuraRunning=false
