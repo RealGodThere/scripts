@@ -599,6 +599,48 @@ task.spawn(function()
 end)
 
 -- =======================
+-- SpamRadiant function
+-- =======================
+local function SpamRadiant()
+    task.spawn(function()
+        local VirtualInputManager = game:GetService("VirtualInputManager")
+
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Two, false, game)
+        task.wait(0.1)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Two, false, game)
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.V, false, game)
+        task.wait(0.1)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.V, false, game)
+
+        for i = 1, 30 do
+            local args = {
+                "Charge",
+                "Radiant Tempest",
+                "LightV2",
+                {
+                    RootCFrame = CFrame.new(
+                        -104.1279067993164, -13.342497825622559, -57.480098724365234,
+                        -0.0027732616290450096, 1.1818434231258834e-08, 0.9999961256980896,
+                        -8.443401355862079e-08, 1, -1.205263799874956e-08,
+                        -0.9999961256980896, -8.446711774467985e-08, -0.0027732616290450096
+                    ),
+                    MouseHit = CFrame.new(
+                        -119.46944427490234, -16.900001525878906, -62.80809783935547,
+                        0.0732104703783989, -0.34043553471565247, 0.9374135136604309,
+                        0, 0.9399358630180359, 0.34135153889656067,
+                        -0.9973165392875671, -0.0249905064702034, 0.06881313771009445
+                    )
+                }
+            }
+
+            game:GetService("ReplicatedStorage"):WaitForChild("Remotes")
+                :WaitForChild("AttackServer"):FireServer(unpack(args))
+            task.wait(0.1)
+        end
+    end)
+end
+
+-- =======================
 -- GUI for toggles (K,L,Y,R)
 -- style preserved from original: black, semi-transparent, draggable
 -- =======================
@@ -609,7 +651,7 @@ local function createBindableGUI()
 	gui.Parent=player:WaitForChild("PlayerGui")
 
 	local frame=Instance.new("Frame")
-	frame.Size=UDim2.new(0,200,0,195)
+	frame.Size=UDim2.new(0,200,0,225)
 	frame.Position=UDim2.new(0,1400,0,200)
 	frame.BackgroundColor3=Color3.fromRGB(20,20,20)
 	frame.BackgroundTransparency=0.3
@@ -619,6 +661,7 @@ local function createBindableGUI()
 	frame.Parent=gui
 
 	local binds={
+		{key="J", name="SpamRadiant", state=function() return false end, toggle=SpamRadiant},
 		{key="K",name="FastSteal", state=function() return stealEnabled end, toggle=function()
 			stealEnabled = not stealEnabled
 			if stealEnabled then scanExistingPrompts() end
