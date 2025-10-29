@@ -270,6 +270,10 @@ end
 local autoClearVFXEnabled = true
 local autoClearVFXConnection = nil
 
+if autoClearVFXEnabled then
+    enableAutoClearVFX()
+end
+
 local function ClearVFX()
 	local Players = game:GetService("Players")
 	local player = Players.LocalPlayer
