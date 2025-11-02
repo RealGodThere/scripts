@@ -345,6 +345,78 @@ local function runAutoAura()
 	autoAuraRunning=false
 end
 
+-- =======================
+-- SwordAura system
+-- =======================
+local SwordAuraActive = false
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local localPlayer = Players.LocalPlayer
+local SwordAuraRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Melee")
+
+local swordList = {
+	"Griffon", "Night Blade", "Clima Tact", "Iron Mace", "Katana", "Axe",
+	"Claws", "Cutlass", "Dual Katana", "Fishman Karate", "Gravity Blade",
+	"Jutte", "Saw", "Punch"
+}
+
+local function getCurrentWeapon()
+	if localPlayer.Character then
+		for _, tool in pairs(localPlayer.Character:GetChildren()) do
+			if tool:IsA("Tool") and table.find(swordList, tool.Name) then
+				return tool
+			end
+		end
+	end
+	if localPlayer.Backpack then
+		for _, tool in pairs(localPlayer.Backpack:GetChildren()) do
+			if tool:IsA("Tool") and table.find(swordList, tool.Name) then
+				return tool
+			end
+		end
+	end
+	return nil
+end
+
+local function equipCurrentWeapon()
+	local char = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+	local hum = char:FindFirstChildOfClass("Humanoid")
+	if not hum then return end
+	local weapon = getCurrentWeapon()
+	if weapon and weapon.Parent == localPlayer.Backpack then
+		hum:EquipTool(weapon)
+	end
+end
+
+-- Основной цикл SwordAura
+task.spawn(function()
+	while task.wait(0.1) do
+		if SwordAuraActive then
+			local weapon = getCurrentWeapon()
+			if weapon then
+				for _, plr in pairs(Players:GetPlayers()) do
+					if plr ~= localPlayer and plr.Character then
+						SwordAuraRemote:FireServer(weapon, plr.Character)
+					end
+				end
+			end
+		end
+	end
+end)
+
+task.spawn(function()
+	while task.wait(1.5) do
+		if SwordAuraActive then
+			equipCurrentWeapon()
+		end
+	end
+end)
+
+local function toggleSwordAura()
+	SwordAuraActive = not SwordAuraActive
+end
+
 local function findYourBase()
 	for _,b in pairs(Bases:GetChildren()) do
 		local s=b:FindFirstChild("Spawn")
@@ -641,7 +713,7 @@ local function createBindableGUI()
 	gui.Parent=player:WaitForChild("PlayerGui")
 
 	local frame=Instance.new("Frame")
-	frame.Size=UDim2.new(0,200,0,225)
+	frame.Size=UDim2.new(0,200,0,260)
 	frame.Position=UDim2.new(0,1400,0,200)
 	frame.BackgroundColor3=Color3.fromRGB(20,20,20)
 	frame.BackgroundTransparency=0.3
@@ -677,7 +749,8 @@ local function createBindableGUI()
 			else
 				task.spawn(runAutoAura)
 			end
-		end}
+		end},
+		{key="Z", name="SwordAura", state=function() return SwordAuraActive end, toggle=toggleSwordAura}
 	}
 
 	local labels={}
