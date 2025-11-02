@@ -270,19 +270,6 @@ end
 local autoClearVFXEnabled = true
 local autoClearVFXConnection = nil
 
-local function ClearVFX()
-	local Players = game:GetService("Players")
-	local player = Players.LocalPlayer
-	local playerName = player.Name
-	local vfxFolder = workspace:GetService("AttackVfx")
-
-	for _, vfx in ipairs(vfxFolder:GetChildren()) do
-		if string.find(vfx.Name, playerName) or string.find(vfx.Name, "Buzz") then
-			vfx:Destroy()
-		end
-	end
-end
-
 local function enableAutoClearVFX()
 	if autoClearVFXConnection then return end
 	local vfxFolder = workspace:FindFirstChild("AttackVfx") or Instance.new("Folder", workspace)
@@ -341,7 +328,7 @@ local function runAutoAura()
 	task.wait(0.5)
 	equipSword("Night Blade")
 	hrp.CFrame=original
-	ClearVFX()
+	enableAutoClearVFX()
 	autoAuraRunning=false
 end
 
