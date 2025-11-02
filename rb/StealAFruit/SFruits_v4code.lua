@@ -274,7 +274,7 @@ local function ClearVFX()
 	local Players = game:GetService("Players")
 	local player = Players.LocalPlayer
 	local playerName = player.Name
-	local vfxFolder = workspace:WaitForChild("AttackVfx")
+	local vfxFolder = workspace:GetService("AttackVfx")
 
 	for _, vfx in ipairs(vfxFolder:GetChildren()) do
 		if string.find(vfx.Name, playerName) or string.find(vfx.Name, "Buzz") then
