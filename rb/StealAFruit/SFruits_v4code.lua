@@ -723,19 +723,19 @@ local function createBindableGUI()
 	frame.Parent=gui
 
 	local binds={
-		{key="J", name="SpamRadiant", state=function() return false end, toggle=SpamRadiant},
-		{key="K",name="FastSteal", state=function() return stealEnabled end, toggle=function()
+		{name="SpamRadiant", state=function() return false end, toggle=SpamRadiant},
+		{name="FastSteal", state=function() return stealEnabled end, toggle=function()
 			stealEnabled = not stealEnabled
 			if stealEnabled then scanExistingPrompts() end
 		end},
-		{key="L",name="BaseLock", state=function() return lockEnabled end, toggle=function()
+		{name="BaseLock", state=function() return lockEnabled end, toggle=function()
 			lockEnabled = not lockEnabled
 		end},
-		{key="Y",name="AllyFriend", state=function() return allianceEnabled end, toggle=function()
+		{name="AllyFriend", state=function() return allianceEnabled end, toggle=function()
 			allianceEnabled = not allianceEnabled
 			if not allianceEnabled then breakAlliance() end
 		end},
-		{key="P", name="ClearAnim", state=function() return autoClearVFXEnabled end, toggle=function()
+		{name="ClearAnim", state=function() return autoClearVFXEnabled end, toggle=function()
 			autoClearVFXEnabled = not autoClearVFXEnabled
 			if autoClearVFXEnabled then
 				enableAutoClearVFX()
@@ -743,14 +743,14 @@ local function createBindableGUI()
 				disableAutoClearVFX()
 			end
 		end},
-		{key="R",name="Killaura", state=function() return autoAuraRunning end, toggle=function()
+		{name="Killaura", state=function() return autoAuraRunning end, toggle=function()
 			if autoAuraRunning then
 				autoAuraCancel=true
 			else
 				task.spawn(runAutoAura)
 			end
 		end},
-		{key="Z", name="SwordAura", state=function() return SwordAuraActive end, toggle=toggleSwordAura}
+		{name="SwordAura", state=function() return SwordAuraActive end, toggle=toggleSwordAura}
 	}
 
 	local labels={}
@@ -765,7 +765,7 @@ local function createBindableGUI()
 		btn.Font=Enum.Font.SourceSansBold
 		btn.Text=bind.name..": OFF"
 		btn.Parent=frame
-		labels[bind.key]=btn
+		labels[bind.name]=btn
 		btn.MouseButton1Click:Connect(function()
 			bind.toggle()
 		end)
@@ -781,7 +781,7 @@ local function createBindableGUI()
 
 	local function updateStatus()
 		for _,bind in ipairs(binds) do
-			local lbl=labels[bind.key]
+			local lbl=labels[bind.name]
 			local on=bind.state()
 			lbl.Text=bind.name..": "..(on and "ON" or "OFF")
 			lbl.TextColor3= on and Color3.fromRGB(0,255,0) or Color3.fromRGB(255,0,0)
